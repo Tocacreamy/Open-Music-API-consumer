@@ -17,12 +17,12 @@ export class MailSender {
       from: "OpenMusic App ",
       to: targetEmail,
       subject: "OpenMusic - export lagu ",
-      text: "Terlampir hasil export lagu Anda",
+      text: "Terlampir hasil export lagu di playlist Anda",
         attachments: [
         {
           filename: "exported_songs.json",
           content,
-        },
+        },  
       ],
     };
 
