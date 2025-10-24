@@ -5,7 +5,7 @@ export class PlaylistSongsService {
     this._pool = new Pool();
   }
 
-  async getSongsFromPlaylist(credentialId,playlistId) {
+  async getSongsFromPlaylist(credentialId, playlistId) {
     const query = {
       text: `
       SELECT
@@ -34,13 +34,12 @@ export class PlaylistSongsService {
 
     const result = await this._pool.query(query);
     if (!result.rows.length) {
-      throw new InvariantError("Lagu gagal diambil dari playlist");
+      throw new Error("Playlist tidak ditemukan atau akses ditolak");
     }
 
     const playlistDetails = {
       id: result.rows[0].playlist_id,
       name: result.rows[0].name,
-      username: result.rows[0].username,
     };
 
     const songs = result.rows
@@ -51,10 +50,12 @@ export class PlaylistSongsService {
         performer: row.performer,
       }));
 
-    const finalResult = {
-      ...playlistDetails,
-      songs,
+    const playlistResult = {
+      playlist: {
+        ...playlistDetails,
+        songs,
+      },
     };
-    return finalResult;
+    return playlistResult;
   }
 }
